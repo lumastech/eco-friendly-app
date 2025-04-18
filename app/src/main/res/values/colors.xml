@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FF03DAC5</color>
+    <color name="purple_500">#FF018786</color>
+    <color name="purple_700">#FF018786</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+
+    <color name="colorPrimary">#9f9f9f</color>
+    <color name="gold">#dfaa3f</color>
+    <color name="colorPrimaryDark">#333333</color>
+    <color name="colorAccent">#64748b</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="bg_login">#64748b</color>
+    <color name="bg_register">#428bca</color>
+    <color name="bg_main">#428bca</color>
+    <color name="input_login">#222222</color>
+    <color name="input_login_hint">#999999</color>
+    <color name="input_register">#888888</color>
+    <color name="input_register_bg">#3b4148</color>
+    <color name="input_register_hint">#5e6266</color>
+    <color name="btn_login">#333333</color>
+    <color name="btn_login_bg">#eceef1</color>
+    <color name="lbl_name">#333333</color>
+    <color name="btn_logut_bg">#ff6861</color>
+    <color name="red">#ff6861</color>
+    <color name="green">#22c55e</color>
+    <color name="green_400">#4ade80</color>
+    <color name="green_300">#6ee7b7</color>
+    <color name="green_100">#dcfce7</color>
+</resources>
