@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/course_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Course Name"
+        android:layout_margin="16dp"
+        android:drawableLeft="@drawable/baseline_edit_note_24"
+        android:lines="1"
+        android:drawablePadding="16dp"
+        android:drawableRight="@drawable/baseline_add_24"/>
+    <ProgressBar
+        android:id="@+id/course_progress"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:indeterminate="false"
+        android:progress="20"/>
+
+</LinearLayout>
