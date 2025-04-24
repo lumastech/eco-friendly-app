@@ -10,4 +10,72 @@
         android:name="com.lumastech.ecoapp.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_fragment_ask"
+        android:name="com.lumastech.ecoapp.Learning.AskFragment"
+        android:label="Ask"
+        tools:layout="@layout/fragment_ask" />
+
+    <fragment
+        android:id="@+id/nav_fragment_chat"
+        android:name="com.lumastech.ecoapp.Chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/nav_fragment_chats"
+        android:name="com.lumastech.ecoapp.Chat.ChatsFragment"
+        android:label="Chats"
+        tools:layout="@layout/fragment_chats" />
+
+    <fragment
+        android:id="@+id/nav_fragment_courses"
+        android:name="com.lumastech.ecoapp.Course.CoursesFragment"
+        android:label="Courses"
+        tools:layout="@layout/fragment_courses" />
+
+    <fragment
+        android:id="@+id/nav_fragment_lesson"
+        android:name="com.lumastech.ecoapp.Course.LessonFragment"
+        android:label="Lesson"
+        tools:layout="@layout/fragment_lesson" />
+
+    <fragment
+        android:id="@+id/nav_fragment_lessons"
+        android:name="com.lumastech.ecoapp.Course.LessonsFragment"
+        android:label="Lessons"
+        tools:layout="@layout/fragment_lessons" />
+
+    <fragment
+        android:id="@+id/nav_fragment_forum"
+        android:name="com.lumastech.ecoapp.Forum.ForumFragment"
+        android:label="Forum"
+        tools:layout="@layout/fragment_forum" />
+
+    <fragment
+        android:id="@+id/nav_fragment_forums"
+        android:name="com.lumastech.ecoapp.Forum.ForumsFragment"
+        android:label="Forums"
+        tools:layout="@layout/fragment_forums" />
+
+    <fragment
+        android:id="@+id/nav_fragment_question"
+        android:name="com.lumastech.ecoapp.Learning.QuestionsFragment"
+        android:label="Questions"
+        tools:layout="@layout/fragment_questions" />
+
+    <fragment
+        android:id="@+id/nav_fragment_quiz"
+        android:name="com.lumastech.ecoapp.Learning.QuizeFragment"
+        android:label="Quiz"
+        tools:layout="@layout/fragment_quize" />
+
+    <fragment
+        android:id="@+id/nav_fragment_users"
+        android:name="com.lumastech.ecoapp.Chat.UsersFragment"
+        android:label="Users"
+        tools:layout="@layout/fragment_users" />
+
+
 </navigation>
