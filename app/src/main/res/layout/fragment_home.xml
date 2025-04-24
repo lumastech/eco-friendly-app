@@ -335,11 +335,15 @@
             </GridLayout>
 
             <TextView
+                android:id="@+id/view_more_courses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="View more"
                 android:textColor="@color/teal_700"
                 android:layout_gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:padding="16dp" />
         </LinearLayout>
 
