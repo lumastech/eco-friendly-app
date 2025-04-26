@@ -21,20 +21,26 @@
                 android:text="My Courses"
                 android:padding="16dp"
                 android:background="@color/white"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/all_courses"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="My Courses"
+                android:text="All Courses"
                 android:padding="16dp"
                 android:background="@color/white"
                 android:layout_marginLeft="4dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:layout_weight="1"/>
         </LinearLayout>
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/course_recycler_view"
+            android:id="@+id/recyclerView"
             android:layout_marginTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
