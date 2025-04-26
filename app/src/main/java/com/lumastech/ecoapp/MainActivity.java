@@ -1,5 +1,8 @@
 package com.lumastech.ecoapp;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,9 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavListener {
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .setAnchorView(R.id.fab).show();
+                binding.appBarMain.fab.setVisibility(GONE);
+                navController.navigate(R.id.nav_fragment_chats);
             }
         });
         DrawerLayout drawer = binding.drawerLayout;
@@ -78,6 +80,11 @@ public class MainActivity extends AppCompatActivity implements NavListener {
 
     @Override
     public void onButtonClicked(int id) {
+        if (id == R.id.nav_fragment_chats || id == R.id.nav_fragment_chat){
+            binding.appBarMain.fab.setVisibility(GONE);
+        }else {
+            binding.appBarMain.fab.setVisibility(VISIBLE);
+        }
         navController.navigate(id);
     }
     @Override
