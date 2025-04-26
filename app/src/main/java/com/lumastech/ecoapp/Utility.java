@@ -13,6 +13,10 @@ import android.view.View;
 import android.widget.EditText;
 
 
+import com.lumastech.ecoapp.Models.Chat;
+import com.lumastech.ecoapp.Models.Course;
+import com.lumastech.ecoapp.Models.Lesson;
+
 import org.json.JSONObject;
 
 import java.util.Calendar;
@@ -20,6 +24,11 @@ import java.util.Objects;
 
 public class Utility {
     private final Context context;
+
+    public static Course COURSE = null;
+    public static Lesson LESSON = null;
+    public static String POST = null;
+    public static Chat CHAT = null;
 
     public Utility(Context context) {
         this.context = context;
