@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.lumastech.ecoapp.Models.Course;
+import com.lumastech.ecoapp.NavListener;
 import com.lumastech.ecoapp.R;
 import com.lumastech.ecoapp.Utility;
 
@@ -29,6 +30,7 @@ public class CoursesFragment extends Fragment {
     private RecyclerView recyclerView;
     private Context context;
     private Utility utility;
+    private NavListener listener;
     public CoursesFragment() {
         // Required empty public constructor
     }
@@ -61,7 +63,9 @@ public class CoursesFragment extends Fragment {
         adapter = new CourseAdapter(getDummyData(), new CourseAdapter.SelectItem() {
             @Override
             public void onItemClicked(Course item) {
-                Toast.makeText(context, "Course", Toast.LENGTH_SHORT).show();
+                if (listener != null){
+                    listener.onButtonClicked(R.id.nav_fragment_lessons);
+                };
             }
         });
 
@@ -76,5 +80,16 @@ public class CoursesFragment extends Fragment {
         list.add(new Course(4, "Biology", "Introduction to biological systems", "Alice Brown", "Active"));
         list.add(new Course(5, "History", "World history overview", "Eve Davis", "Inactive"));
         return  list;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof NavListener) {
+            listener = (NavListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 }
