@@ -1,60 +1,50 @@
 package com.lumastech.ecoapp.Chat;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.lumastech.ecoapp.Models.Chat;
+import com.lumastech.ecoapp.Models.Course;
+import com.lumastech.ecoapp.Models.Message;
+import com.lumastech.ecoapp.NavListener;
 import com.lumastech.ecoapp.R;
+import com.lumastech.ecoapp.Utility;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChatsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
 public class ChatsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private List<Course> itemList;
+    private ChatsAdapter adapter;
+    private RecyclerView recyclerView;
+    private Context context;
+    private Utility utility;
+    private NavListener listener;
 
     public ChatsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ChatsFragment newInstance(String param1, String param2) {
-        ChatsFragment fragment = new ChatsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new ChatsFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -62,5 +52,106 @@ public class ChatsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chats, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        context = getContext();
+        utility = new Utility(context);
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        adapter = new ChatsAdapter(generateDummyChats(), new ChatsAdapter.SelectItem() {
+            @Override
+            public void onItemClicked(Chat item) {
+                if (listener != null){
+                    Utility.CHAT = item;
+                    listener.onButtonClicked(R.id.nav_fragment_chat);
+                };
+            }
+        });
+
+        recyclerView.setAdapter(adapter);
+    }
+
+    public static List<Chat> generateDummyChats() {
+        List<Chat> chats = new ArrayList<>();
+
+        chats.add(new Chat() {{
+            id = 1;
+            user_id = 101;
+            name = "Alice";
+            image_url = "https://example.com/images/alice.png";
+            messages = Arrays.asList(
+                    new Message() {{
+                        created_at = "2025-04-25T10:15:00";
+                        message = "Hey there!";
+                        sender_id = "101";
+                        isOpen = true;
+                    }},
+                    new Message() {{
+                        created_at = "2025-04-25T10:17:00";
+                        message = "How are you?";
+                        sender_id = "100";
+                        isOpen = false;
+                    }}
+            );
+        }});
+
+        chats.add(new Chat() {{
+            id = 2;
+            user_id = 102;
+            name = "Bob";
+            image_url = "https://example.com/images/bob.png";
+            messages = Arrays.asList(
+                    new Message() {{
+                        created_at = "2025-04-25T11:00:00";
+                        message = "Hello!";
+                        sender_id = "102";
+                        isOpen = true;
+                    }},
+                    new Message() {{
+                        created_at = "2025-04-25T11:05:00";
+                        message = "Are we still meeting today?";
+                        sender_id = "100";
+                        isOpen = true;
+                    }}
+            );
+        }});
+
+        chats.add(new Chat() {{
+            id = 3;
+            user_id = 103;
+            name = "Charlie";
+            image_url = "https://example.com/images/charlie.png";
+            messages = Arrays.asList(
+                    new Message() {{
+                        created_at = "2025-04-24T09:30:00";
+                        message = "Good morning!";
+                        isOpen = false;
+                    }},
+                    new Message() {{
+                        created_at = "2025-04-24T09:30:00";
+                        message = "Good morning, and how are you?";
+                        sender_id = "100";
+                        isOpen = false;
+                    }}
+            );
+        }});
+
+        return chats;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof NavListener) {
+            listener = (NavListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 }
