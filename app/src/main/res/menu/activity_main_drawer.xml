@@ -6,7 +6,26 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/baseline_home_24"
             android:title="@string/menu_home" />
+
+        <item
+            android:id="@+id/nav_fragment_courses"
+            android:icon="@drawable/baseline_drive_file_move_24"
+            android:title="@string/courses" />
+
+        <item
+            android:id="@+id/nav_fragment_forums"
+            android:icon="@drawable/baseline_wb_incandescent_24"
+            android:title="@string/forum" />
+        <item
+            android:id="@+id/nav_fragment_chats"
+            android:icon="@drawable/baseline_mark_unread_chat_alt_24"
+            android:title="@string/chats" />
+
+        <item
+            android:id="@+id/nav_fragment_question"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/question_sessions" />
     </group>
 </menu>
