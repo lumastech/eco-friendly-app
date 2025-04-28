@@ -1,25 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_marginVertical="16dp"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="1. Question"
-        android:textStyle="bold" />
-     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Answers"
-            android:textStyle="bold" />
-
+    android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
         android:orientation="horizontal">
         <ImageView
             android:layout_width="50dp"
@@ -37,23 +27,89 @@
                 android:text="User Name"
                 android:textStyle="bold" />
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/created_at"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="21/04/2025 14:00"
                 android:textStyle="italic" />
             <TextView
-                android:id="@+id/comment"
+                android:id="@+id/question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Question"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Responce"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/edit_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:text="Edit" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/updated_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="21/04/2025 14:00"
+                android:textStyle="italic" />
+            <TextView
+                android:id="@+id/answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="The speed of the current warming phenomenon is far faster any previous temperature change."/>
-            <View
+            <LinearLayout
+                android:id="@+id/input_cont"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="@color/bg_login"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/answer_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_outline"
+                    android:padding="8dp"
+                    android:maxLines="5"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right">
+                    <Button
+                        android:id="@+id/cancel_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:backgroundTint="@color/black_overlay"
+                        android:text="Cancel" />
+                    <Button
+                        android:id="@+id/submit_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Submit" />
+
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/bg_login"/>
 </LinearLayout>
