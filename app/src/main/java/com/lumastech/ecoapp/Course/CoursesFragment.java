@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.lumastech.ecoapp.Models.Course;
 import com.lumastech.ecoapp.NavListener;
@@ -64,6 +63,7 @@ public class CoursesFragment extends Fragment {
             @Override
             public void onItemClicked(Course item) {
                 if (listener != null){
+                    Utility.COURSE = item;
                     listener.onButtonClicked(R.id.nav_fragment_lessons);
                 };
             }
