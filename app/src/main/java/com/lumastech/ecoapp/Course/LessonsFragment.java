@@ -25,7 +25,7 @@ import java.util.List;
 
 public class LessonsFragment extends Fragment {
 
-    private List<Course> itemList;
+    private List<Lesson> itemList;
     private LessonAdapter adapter;
     private RecyclerView recyclerView;
     private Context context;
@@ -57,15 +57,17 @@ public class LessonsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         context = getContext();
         utility = new Utility(context);
+        itemList = Utility.COURSE.lessons;
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        adapter = new LessonAdapter(getDummyData(), new LessonAdapter.SelectItem() {
+        adapter = new LessonAdapter(itemList, new LessonAdapter.SelectItem() {
             @Override
             public void onItemClicked(Lesson item) {
                 if (listener != null){
                     Utility.LESSON = item;
+                    Utility.LESSON_COUNT = itemList.indexOf(item)+1;
                     listener.onButtonClicked(R.id.nav_fragment_lesson);
                 }
             }
@@ -74,15 +76,6 @@ public class LessonsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    public ArrayList<Lesson> getDummyData(){
-        ArrayList<Lesson> list = new ArrayList<>();
-        list.add(new Lesson( 1, "Mathematics", 10));
-        list.add(new Lesson( 2, "Physics", 10 ));
-        list.add(new Lesson(3, "Chemistry", 10));
-        list.add(new Lesson(4, "Biology", 10));
-        list.add(new Lesson(5, "History", 10));
-        return  list;
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
