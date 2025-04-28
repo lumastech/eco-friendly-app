@@ -6,6 +6,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
+    android:background="@drawable/gradient_5"
     android:orientation="vertical">
     <TextView
         android:id="@+id/course_name"
@@ -14,8 +15,10 @@
         android:text="Course Name"
         android:layout_margin="16dp"
         android:drawableLeft="@drawable/baseline_edit_note_24"
+        android:drawableTint="@color/white"
         android:lines="1"
         android:drawablePadding="16dp"
+        android:textColor="@color/white"
         android:drawableRight="@drawable/baseline_add_24"/>
     <ProgressBar
         android:id="@+id/course_progress"
