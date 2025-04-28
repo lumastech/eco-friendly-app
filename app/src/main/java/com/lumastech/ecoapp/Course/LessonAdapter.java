@@ -38,6 +38,8 @@ public class LessonAdapter  extends RecyclerView.Adapter<LessonAdapter.LessonVie
         holder.counter.setText("LESSON ".concat(String.valueOf(position+1)));
         holder.points.setText(String.valueOf(lesson.points));
         holder.startBtn.setVisibility(View.GONE);
+        holder.description.setText(lesson.description);
+
         holder.itemCont.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
