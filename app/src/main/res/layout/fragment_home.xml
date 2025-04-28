@@ -26,6 +26,7 @@
 
         <LinearLayout
             android:background="@drawable/gradient_2"
+            android:hapticFeedbackEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -40,11 +41,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="400"
+                    android:textColor="@color/black_overlay"
                     android:textSize="16pt"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/black_overlay"
                     android:text="Points"/>
                 <Button
                     android:id="@+id/continue_learning"
@@ -53,12 +56,14 @@
                     android:text="Continue Learning"
                     android:layout_gravity="center"
                     android:textSize="4pt"
+                    android:textColor="@color/white"
                     android:padding="4dp" />
             </LinearLayout>
             <TextView
                 android:id="@+id/card_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black_overlay"
                 android:text="Get over 500 points this week to get a free One on One Class" />
         </LinearLayout>
 
@@ -73,6 +78,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black_overlay"
                 android:text="Head to forum and see what other people are talking about." />
 
             <Button
@@ -80,6 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Join the Convasation"
+                android:textColor="@color/white"
                 android:layout_gravity="right" />
         </LinearLayout>
 
@@ -109,13 +116,15 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_columnWeight="1"
-                    android:background="@drawable/gradient_1"
+                    android:background="@drawable/gradient_4"
+                    android:layout_margin="2dp"
                     android:padding="8dp">
 
                     <TextView
                         android:id="@+id/topic_title_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/white"
                         android:text="Topic 1"
                         android:lines="1"
                         android:textStyle="bold" />
@@ -124,6 +133,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lines="1"
+                        android:textColor="@color/white"
                         android:text="Climate Science Fundam..." />
                 </LinearLayout>
 
@@ -134,7 +144,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_columnWeight="1"
-                    android:background="@drawable/gradient_1"
+                    android:background="@drawable/gradient_4"
+                    android:layout_margin="2dp"
                     android:padding="8dp">
 
                     <TextView
@@ -142,6 +153,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Topic 2"
+                        android:textColor="@color/white"
                         android:lines="1"
                         android:textStyle="bold" />
                     <TextView
@@ -149,6 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lines="1"
+                        android:textColor="@color/white"
                         android:text="Climate Science Fundam..." />
                 </LinearLayout>
 
@@ -159,7 +172,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_columnWeight="1"
-                    android:background="@drawable/gradient_1"
+                    android:background="@drawable/gradient_4"
+                    android:layout_margin="2dp"
                     android:padding="8dp">
 
                     <TextView
@@ -168,12 +182,14 @@
                         android:layout_height="wrap_content"
                         android:text="Topic 3"
                         android:lines="1"
+                        android:textColor="@color/white"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/test_title_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lines="1"
+                        android:textColor="@color/white"
                         android:text="Climate Science Fundam..." />
                 </LinearLayout>
 
@@ -184,7 +200,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_columnWeight="1"
-                    android:background="@drawable/gradient_1"
+                    android:background="@drawable/gradient_4"
+                    android:layout_margin="2dp"
                     android:padding="8dp">
 
                     <TextView
@@ -193,12 +210,14 @@
                         android:layout_height="wrap_content"
                         android:text="Topic 4"
                         android:lines="1"
+                        android:textColor="@color/white"
                         android:textStyle="bold" />
                     <TextView
                         android:id="@+id/test_title_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lines="1"
+                        android:textColor="@color/white"
                         android:text="Climate Science Fundam..." />
                 </LinearLayout>
 
@@ -223,7 +242,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/module_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"/>
 
             <TextView
                 android:id="@+id/view_more_courses"
