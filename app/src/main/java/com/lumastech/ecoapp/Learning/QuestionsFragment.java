@@ -1,60 +1,53 @@
 package com.lumastech.ecoapp.Learning;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.lumastech.ecoapp.Forum.PostAdapter;
+import com.lumastech.ecoapp.Models.Course;
+import com.lumastech.ecoapp.Models.Post;
+import com.lumastech.ecoapp.Models.Question;
+import com.lumastech.ecoapp.Models.User;
+import com.lumastech.ecoapp.NavListener;
 import com.lumastech.ecoapp.R;
+import com.lumastech.ecoapp.Utility;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link QuestionsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
 public class QuestionsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private List<Question> itemList;
+    private QuestionAdapter adapter;
+    private RecyclerView recyclerView;
+    private Context context;
+    private Utility utility;
+    private Button askBtn;
+    private NavListener listener;
     public QuestionsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment QuestionsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static QuestionsFragment newInstance(String param1, String param2) {
-        QuestionsFragment fragment = new QuestionsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        return new QuestionsFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -62,5 +55,105 @@ public class QuestionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_questions, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        context = getContext();
+        utility = new Utility(context);
+
+        itemList = getDummyData();
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        askBtn = view.findViewById(R.id.ask_btn);
+
+        adapter = new QuestionAdapter(itemList, new QuestionAdapter.SelectItem() {
+            @Override
+            public void onItemClicked(Question item) {
+
+            }
+
+            @Override
+            public void onItemClicked(Question item, Question update) {
+                itemList.get(itemList.indexOf(item)).answer = update.answer;
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        askBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null){
+                    listener.onButtonClicked(R.id.nav_fragment_ask);
+                }
+            }
+        });
+
+        recyclerView.setAdapter(adapter);
+    }
+
+    private List<Question> getDummyData() {
+        List<Question> list = Arrays.asList(
+                new Question(){{
+                    id = 1;
+                    user_id = 102;
+                    question = "What’s the science?";
+                    answer = "The speed of the current warming phenomenon is far faster any previous temperature change";
+                    user = new User() {{
+                        id = 102;
+                        name = "Lumas Mulo";
+                    }};
+                    created_at = "21/04/2025 14:00";
+                    updated_at = "21/04/2025 17:00";
+                }},new Question(){{
+                    id = 2;
+                    user_id = 103;
+                    question = "What’s the science?";
+                    answer = "The speed of the current warming phenomenon is far faster any previous temperature change";
+                    user = new User() {{
+                        id = 103;
+                        name = "Mulenga Mapalo";
+                    }};
+                    created_at = "21/04/2025 14:00";
+                    updated_at = "21/04/2025 17:00";
+                }},new Question(){{
+                    id = 3;
+                    user_id = 104;
+                    question = "What’s the science?";
+                    answer = "The speed of the current warming phenomenon is far faster any previous temperature change";
+                    user = new User() {{
+                        id = 104;
+                        name = "Peter Malley";
+                    }};
+                    created_at = "21/04/2025 14:00";
+                    updated_at = "21/04/2025 17:00";
+                }},new Question(){{
+                    id = 4;
+                    user_id = 101;
+                    question = "What’s the science?";
+                    answer = "The speed of the current warming phenomenon is far faster any previous temperature change";
+                    user = new User() {{
+                        id = 101;
+                        name = "James Daka";
+                    }};
+                    created_at = "21/04/2025 14:00";
+                    updated_at = "21/04/2025 17:00";
+                }}
+        );
+
+        return list;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof NavListener) {
+            listener = (NavListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 }
