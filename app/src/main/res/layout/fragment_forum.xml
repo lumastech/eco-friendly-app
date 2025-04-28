@@ -14,12 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/logo"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/bg_login"
-            android:layout_marginBottom="16dp"/>
+            android:background="@drawable/weather"/>
         <TextView
             android:id="@+id/post_title"
             android:layout_width="match_parent"
