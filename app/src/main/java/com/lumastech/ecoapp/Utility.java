@@ -17,10 +17,12 @@ import com.lumastech.ecoapp.Models.Chat;
 import com.lumastech.ecoapp.Models.Course;
 import com.lumastech.ecoapp.Models.Lesson;
 import com.lumastech.ecoapp.Models.Post;
+import com.lumastech.ecoapp.Models.Quiz;
 
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
 
 public class Utility {
@@ -30,6 +32,8 @@ public class Utility {
     public static Lesson LESSON = null;
     public static Post POST = null;
     public static Chat CHAT = null;
+    public static List<Quiz> QUIZ = null;
+    public static int LESSON_COUNT = 0;
 
     public Utility(Context context) {
         this.context = context;
