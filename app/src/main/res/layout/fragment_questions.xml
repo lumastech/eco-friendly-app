@@ -25,7 +25,7 @@
             android:layout_weight="1"
             android:textStyle="italic" />
         <Button
-            android:id="@+id/ask_a_question"
+            android:id="@+id/ask_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ask a Question" />
