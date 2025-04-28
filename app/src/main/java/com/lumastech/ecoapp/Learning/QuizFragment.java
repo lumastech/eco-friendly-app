@@ -26,7 +26,6 @@ import com.lumastech.ecoapp.Models.Quiz;
 import com.lumastech.ecoapp.R;
 import com.lumastech.ecoapp.Utility;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,6 +38,7 @@ public class QuizFragment extends Fragment {
     List<Quiz> items;
     Quiz quiz = null;
     TextView question, attempts, counter, myAnswerTv, resultTv;
+    String myAnswer = null;
     String myChoice = null;
     View resultCont, retryBtn;
     Button previousBtn, nextBtn;
@@ -90,7 +90,7 @@ public class QuizFragment extends Fragment {
         nextBtn = view.findViewById(R.id.next_btn);
         resultCont.setVisibility(GONE);
 
-        items = getDummy();
+        items = Utility.QUIZ;
 
         if (!items.isEmpty()){
             quiz = items.get(0);
@@ -101,6 +101,7 @@ public class QuizFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (quizCounter < (items.size() -1)){
+                    myAnswer = "";
                     refreshOpt();
                     quizCounter++;
                     quiz = items.get(quizCounter);
@@ -116,6 +117,7 @@ public class QuizFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (quizCounter > 0){
+                    myAnswer = "";
                     refreshOpt();
                     quizCounter--;
                     quiz = items.get(quizCounter);
@@ -128,6 +130,7 @@ public class QuizFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (items.get(quizCounter).attempts > 0){
+                    myAnswer = "";
                     resultCont.setVisibility(GONE);
                     refreshOpt();
                     submitBtn.setVisibility(VISIBLE);
@@ -139,7 +142,7 @@ public class QuizFragment extends Fragment {
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (myChoice == null){
+                if (myAnswer == null){
                     utility.generalDialog("Please select an Option");
                     return;
                 }
@@ -149,7 +152,8 @@ public class QuizFragment extends Fragment {
                 disableOpt();
                 submitBtn.setVisibility(GONE);
                 retryBtn.setVisibility(GONE);
-                if (Objects.equals(quiz.as, myChoice)){
+                quiz.choice = myChoice;
+                if (Objects.equals(quiz.as, myAnswer)){
                     resultTv.setText("Your Answer is correct");
                 }else {
                     resultTv.setText("Your Answer is Wrong!");
@@ -170,8 +174,8 @@ public class QuizFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    myChoice = a.getText().toString();
-                    quiz.choice = "a";
+                    myAnswer = a.getText().toString();
+                    myChoice = "a";
                 }
             }
         });
@@ -179,8 +183,8 @@ public class QuizFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    myChoice = b.getText().toString();
-                    quiz.choice = "b";
+                    myAnswer = b.getText().toString();
+                    myChoice = "b";
                 }
             }
         });
@@ -188,8 +192,8 @@ public class QuizFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    myChoice = c.getText().toString();
-                    quiz.choice = "c";
+                    myAnswer = c.getText().toString();
+                    myChoice = "c";
                 }
             }
         });
@@ -197,8 +201,8 @@ public class QuizFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    myChoice = d.getText().toString();
-                    quiz.choice = "d";
+                    myAnswer = d.getText().toString();
+                    myChoice = "d";
                 }
             }
         });
@@ -206,24 +210,13 @@ public class QuizFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
-                    myChoice = e.getText().toString();
-                    quiz.choice = "e";
+                    myAnswer = e.getText().toString();
+                    myChoice = "e";
                 }
             }
         });
     }
 
-
-    public List<Quiz> getDummy(){
-        ArrayList<Quiz> list = new ArrayList<>();
-        String qs = "What’s the science?";
-        list.add(new Quiz(1, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 2", qs));
-        list.add(new Quiz(2, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 4", qs));
-        list.add(new Quiz(3, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 2", qs));
-        list.add(new Quiz(4, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 1", qs));
-        list.add(new Quiz(5, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 3", qs));
-        return list;
-    }
 
 
     public void setView(){
@@ -348,7 +341,7 @@ public class QuizFragment extends Fragment {
         c.setTextColor(Color.parseColor("#000000"));
         d.setTextColor(Color.parseColor("#000000"));
         e.setTextColor(Color.parseColor("#000000"));
-        myChoice = null;
+        myAnswer = null;
     }
 
     private void popBack(int id) {
