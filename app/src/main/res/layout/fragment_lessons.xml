@@ -15,6 +15,11 @@
         android:drawableLeft="@drawable/baseline_edit_note_24"
         android:lines="1"
         android:drawablePadding="16dp"
+        android:background="@drawable/gradient_5"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="8dp"
+        android:textColor="@color/white"
+        android:drawableTint="@color/white"
         android:drawableRight="@drawable/baseline_add_24"/>
 
     <androidx.recyclerview.widget.RecyclerView
