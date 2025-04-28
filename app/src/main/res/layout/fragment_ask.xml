@@ -20,7 +20,7 @@
         android:gravity="top"
         android:padding="8dp"
         android:background="@drawable/bg_outline"
-        android:text="Type your question" />
+        android:hint="Type your question" />
 
     <Button
         android:id="@+id/submit_btn"
