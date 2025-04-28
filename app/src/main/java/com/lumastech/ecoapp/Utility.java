@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.lumastech.ecoapp.Models.Chat;
 import com.lumastech.ecoapp.Models.Course;
 import com.lumastech.ecoapp.Models.Lesson;
+import com.lumastech.ecoapp.Models.Post;
 
 import org.json.JSONObject;
 
@@ -27,7 +28,7 @@ public class Utility {
 
     public static Course COURSE = null;
     public static Lesson LESSON = null;
-    public static String POST = null;
+    public static Post POST = null;
     public static Chat CHAT = null;
 
     public Utility(Context context) {
