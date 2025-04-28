@@ -64,14 +64,15 @@ public class LessonFragment extends Fragment {
 
         if(lesson != null) {
             title.setText(lesson.title);
-            lessonCounter.setText("LESSON ");
-            content.setText("Content");
+            lessonCounter.setText("LESSON ".concat(String.valueOf(Utility.LESSON_COUNT)));
+            content.setText(lesson.content);
         }
 
         takeTestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null){
+                    Utility.QUIZ = lesson.quizzes;
                     listener.onButtonClicked(R.id.nav_fragment_quiz);
                 }
             }
