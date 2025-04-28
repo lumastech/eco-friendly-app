@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavListener {
 
     @Override
     public void onButtonClicked(int id) {
-        if (id == R.id.nav_fragment_chats || id == R.id.nav_fragment_chat){
+        if (id == R.id.nav_fragment_chats || id == R.id.nav_fragment_chat || id == R.id.nav_fragment_forum){
             binding.appBarMain.fab.setVisibility(GONE);
         }else {
             binding.appBarMain.fab.setVisibility(VISIBLE);
