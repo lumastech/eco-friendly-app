@@ -18,8 +18,11 @@ public class Api {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
+        ApiErrorInterceptor apiErrorInterceptor = new ApiErrorInterceptor();
+
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
+                .addInterceptor(apiErrorInterceptor)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
@@ -73,4 +76,5 @@ public class Api {
             throw new RuntimeException(e);
         }
     }
+
 }
