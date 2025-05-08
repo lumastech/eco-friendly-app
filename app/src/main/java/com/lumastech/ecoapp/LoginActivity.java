@@ -18,9 +18,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.gson.Gson;
-import com.lumastech.ecoapp.Models.RegisterRequest;
-import com.lumastech.ecoapp.Models.RegisterResponse;
+import com.lumastech.ecoapp.Models.ApiResponse;
+import com.lumastech.ecoapp.Models.AuthResponse;
+import com.lumastech.ecoapp.Models.LoginRequest;
+import com.lumastech.ecoapp.Models.User;
 
 
 import java.util.Objects;
@@ -28,6 +29,7 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText = null, passworEditText = null;
@@ -60,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
                 utility.removeError(passworEditText);
 
                 if(!email.isEmpty() && !password.isEmpty()){
-                    RegisterRequest request = new RegisterRequest();
+                    LoginRequest request = new LoginRequest();
                     request.setEmail(email);
                     request.setPassword(password);
                     loginUser(request);
@@ -77,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void loginUser(RegisterRequest request){
+    public void loginUser(LoginRequest request){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
@@ -92,46 +94,23 @@ public class LoginActivity extends AppCompatActivity {
                 "Please wait...", true);
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()){
-            Call<RegisterResponse> registerResponseCall = Api.apiCall().token(request);
-            registerResponseCall.enqueue(new Callback<RegisterResponse>() {
+            Call<ApiResponse<AuthResponse>> registerResponseCall = Api.apiCall().login(request);
+            registerResponseCall.enqueue(new Callback<ApiResponse<AuthResponse>>() {
                 @Override
-                public void onResponse(@NonNull Call<RegisterResponse> call, @NonNull Response<RegisterResponse> response) {
+                public void onResponse(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Response<ApiResponse<AuthResponse>> response) {
 
-                    if (response.isSuccessful()){
-                        assert response.body() != null;
-                        RegisterResponse res = response.body();
-                        if (response.body().isSuccess()){
-                            utility.writeToFile("token", response.body().getToken());
-                            utility.writeToFile("username", response.body().getUser().name);
-                            utility.writeToFile("userid", String.valueOf(response.body().getUser().id));
-                            startActivity(new Intent(context, MainActivity.class));
-                        }else{
-                            String message = "";
-                            if (res.getMessage() != null){
-                                message = res.getMessage();
-                            }
-                            if (message.contains("email")){
-                                utility.setError(usernameEditText);
-                            }
-                            if (message.contains("password")){
-                                utility.setError(passworEditText);
-                            }
-                            if (!message.isEmpty()){
-                                utility.generalDialog(message);
-                            }
-                        }
-//
-                        dialog.dismiss();
-//                        finish();
+                    if (response.isSuccessful() && response.body() != null) {
+                        AuthResponse authResponse = response.body().getData();
+                        String token = authResponse.getAuthorizationHeader();
+                        User user = authResponse.getUser();
 
-                    }else {
-                        dialog.dismiss();
-                        utility.generalDialog("We received an expected response! Please try again");
+                        // Save token and user data
+                        utility.writeToFile("token", token);
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<RegisterResponse> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Throwable t) {
                     String message = "Error : "+t.getLocalizedMessage();
                     if (Objects.equals(t.getLocalizedMessage(), "End of input at line 1 column 1 path $")){
                         message = "We are having trouble connecting to the internet! Please make sure you have a working Internet connection.";
