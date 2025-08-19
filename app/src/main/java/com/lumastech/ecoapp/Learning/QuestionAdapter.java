@@ -44,7 +44,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         Question item = itemList.get(position);
         holder.question.setText(item.question);
         holder.createdAt.setText(item.created_at);
-        holder.username.setText(item.user.name);
+        holder.username.setText(item.user.getName());
         if (item.answer != null){
             holder.answer.setText(item.answer);
             holder.answerEdit.setText(item.answer);
