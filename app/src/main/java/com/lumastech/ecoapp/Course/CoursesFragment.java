@@ -1,10 +1,16 @@
 package com.lumastech.ecoapp.Course;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.lumastech.ecoapp.Api;
+import com.lumastech.ecoapp.Models.ApiResponse;
 import com.lumastech.ecoapp.Models.Course;
 import com.lumastech.ecoapp.Models.Lesson;
 import com.lumastech.ecoapp.Models.Quiz;
@@ -22,6 +30,11 @@ import com.lumastech.ecoapp.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class CoursesFragment extends Fragment {
@@ -57,11 +70,57 @@ public class CoursesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         context = getContext();
         utility = new Utility(context);
-
         recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        fetchCourses();
+    }
 
-        adapter = new CourseAdapter(getDummyData(), new CourseAdapter.SelectItem() {
+
+    private void fetchCourses() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+        AlertDialog alertDialog;
+
+        alertDialog = builder.create();
+        ProgressDialog dialog = ProgressDialog.show(context, "",
+                "Please wait...", true);
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(context, ConnectivityManager.class);
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()){
+            Call<ApiResponse<List<Course>>> registerResponseCall = Api.apiCall().getCourses(utility.token());
+            registerResponseCall.enqueue(new Callback<ApiResponse<List<Course>>>() {
+                @Override
+                public void onResponse(@NonNull Call<ApiResponse<List<Course>>> call, @NonNull Response<ApiResponse<List<Course>>> response) {
+                    dialog.dismiss();
+                    utility.checkResponse(response.code(), response.message());
+                    if (response.isSuccessful() && response.body() != null) {
+                        itemList = response.body().getData();
+                        setViews();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ApiResponse<List<Course>>> call, @NonNull Throwable t) {
+                    String message = "Error : "+t.getLocalizedMessage();
+                    if (Objects.equals(t.getLocalizedMessage(), "End of input at line 1 column 1 path $")){
+                        message = "We are having trouble connecting to the internet! Please make sure you have a working Internet connection.";
+                    }
+                    utility.dialog(message);
+                    dialog.dismiss();
+                    builder.setMessage(message);
+                    alertDialog.show();
+                }
+            });
+        }else{
+            dialog.dismiss();
+            utility.dialog("There is no Internet connection!");
+        }
+    }
+
+    private void setViews(){
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        adapter = new CourseAdapter(itemList, new CourseAdapter.SelectItem() {
             @Override
             public void onItemClicked(Course item) {
                 if (listener != null){
@@ -74,34 +133,6 @@ public class CoursesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    public ArrayList<Course> getDummyData(){
-        ArrayList<Course> list = new ArrayList<>();
-        // lesson list
-        ArrayList<Lesson> lessonList = new ArrayList<>();
-        lessonList.add(new Lesson( 1, "Climate Change 101: The Basics", 10, "An introduction to climate change.", "Climate change is a large-scale, long-term shift in the Earth's weather patterns or average temperatures. Climate systems have varied naturally over the years; changes occurred in cycles over tens of thousands of years resulting in the Ice Ages and interglacial warming periods.\n\nWhat’s the science?\n" +
-                "\n" +
-                "The Earth is constantly bombarded by radiation from the sun. About 30% of this is reflected back into space by clouds and ice. The rest of this heat radiation is absorbed into the land, oceans and atmosphere. As the latter heat up, they release heat back into space. Greenhouse gases in the atmosphere absorb and re-emit radiation, trapping warmth. The balance of incoming and outgoing heat radiation determines global temperatures.", getDummy()));
-        lessonList.add(new Lesson( 1, "Climate Change 101: The Basics", 10, "An introduction to climate change.", "Climate change is a large-scale, long-term shift in the Earth's weather patterns or average temperatures. Climate systems have varied naturally over the years; changes occurred in cycles over tens of thousands of years resulting in the Ice Ages and interglacial warming periods.\n\nWhat’s the science?\n" +
-                "\n" +
-                "The Earth is constantly bombarded by radiation from the sun. About 30% of this is reflected back into space by clouds and ice. The rest of this heat radiation is absorbed into the land, oceans and atmosphere. As the latter heat up, they release heat back into space. Greenhouse gases in the atmosphere absorb and re-emit radiation, trapping warmth. The balance of incoming and outgoing heat radiation determines global temperatures.", getDummy()));
-        lessonList.add(new Lesson( 1, "Climate Change 101: The Basics", 10, "An introduction to climate change.", "Climate change is a large-scale, long-term shift in the Earth's weather patterns or average temperatures. Climate systems have varied naturally over the years; changes occurred in cycles over tens of thousands of years resulting in the Ice Ages and interglacial warming periods.\n\nWhat’s the science?\n" +
-                "\n" +
-                "The Earth is constantly bombarded by radiation from the sun. About 30% of this is reflected back into space by clouds and ice. The rest of this heat radiation is absorbed into the land, oceans and atmosphere. As the latter heat up, they release heat back into space. Greenhouse gases in the atmosphere absorb and re-emit radiation, trapping warmth. The balance of incoming and outgoing heat radiation determines global temperatures.", getDummy()));
-        lessonList.add(new Lesson( 1, "Climate Change 101: The Basics", 10, "An introduction to climate change.", "Climate change is a large-scale, long-term shift in the Earth's weather patterns or average temperatures. Climate systems have varied naturally over the years; changes occurred in cycles over tens of thousands of years resulting in the Ice Ages and interglacial warming periods.\n\nWhat’s the science?\n" +
-                "\n" +
-                "The Earth is constantly bombarded by radiation from the sun. About 30% of this is reflected back into space by clouds and ice. The rest of this heat radiation is absorbed into the land, oceans and atmosphere. As the latter heat up, they release heat back into space. Greenhouse gases in the atmosphere absorb and re-emit radiation, trapping warmth. The balance of incoming and outgoing heat radiation determines global temperatures.", getDummy()));
-        lessonList.add(new Lesson( 1, "Climate Change 101: The Basics", 10, "An introduction to climate change.", "Climate change is a large-scale, long-term shift in the Earth's weather patterns or average temperatures. Climate systems have varied naturally over the years; changes occurred in cycles over tens of thousands of years resulting in the Ice Ages and interglacial warming periods.\n\nWhat’s the science?\n" +
-                "\n" +
-                "The Earth is constantly bombarded by radiation from the sun. About 30% of this is reflected back into space by clouds and ice. The rest of this heat radiation is absorbed into the land, oceans and atmosphere. As the latter heat up, they release heat back into space. Greenhouse gases in the atmosphere absorb and re-emit radiation, trapping warmth. The balance of incoming and outgoing heat radiation determines global temperatures.", getDummy()));
-
-
-        list.add(new Course( 1, "Mathematics", "An introduction to mathematical concepts.", "John Doe", "Active", lessonList));
-        list.add(new Course( 2, "Physics", "Fundamentals of physics", "Jane Smith", "Active", lessonList));
-        list.add(new Course(3, "Chemistry", "Core concepts in chemistry", "Bob Johnson", "Inactive", lessonList));
-        list.add(new Course(4, "Biology", "Introduction to biological systems", "Alice Brown", "Active", lessonList));
-        list.add(new Course(5, "History", "World history overview", "Eve Davis", "Inactive", lessonList));
-        return  list;
-    }
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -112,16 +143,5 @@ public class CoursesFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
-    }
-
-    public List<Quiz> getDummy(){
-        ArrayList<Quiz> list = new ArrayList<>();
-        String qs = "What’s the science?";
-        list.add(new Quiz(1, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 2", qs));
-        list.add(new Quiz(2, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 4", qs));
-        list.add(new Quiz(3, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 2", qs));
-        list.add(new Quiz(4, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 1", qs));
-        list.add(new Quiz(5, 1, "answer 1", "answer 2", "answer 3", "answer 4", "answer 5", "answer 3", qs));
-        return list;
     }
 }
