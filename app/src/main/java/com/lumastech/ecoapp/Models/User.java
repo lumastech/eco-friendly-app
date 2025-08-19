@@ -3,18 +3,25 @@ package com.lumastech.ecoapp.Models;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
-    private long id;
-    private String name;
-    private String email;
-    
+    public long id;
+    public String name;
+    public String email;
+    public String points;
+
     @SerializedName("email_verified_at")
-    private String emailVerifiedAt;
+    public String emailVerifiedAt;
     
     @SerializedName("created_at")
-    private String createdAt;
+    public String createdAt;
     
     @SerializedName("updated_at")
-    private String updatedAt;
+    public String updatedAt;
+
+    @SerializedName("profile_photo_path")
+    public String image;
+
+    @SerializedName("profile_photo_url")
+    public String imageCover;
 
     // Getters and Setters
     public long getId() {
@@ -31,6 +38,14 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPoints() {
+        return points;
+    }
+
+    public void setPoints(String points) {
+        this.points = points;
     }
 
     public String getEmail() {
