@@ -18,12 +18,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lumastech.ecoapp.Course.CourseAdapter;
 import com.lumastech.ecoapp.Course.CoursesFragment;
 import com.lumastech.ecoapp.Models.Course;
+import com.lumastech.ecoapp.Models.User;
 import com.lumastech.ecoapp.NavListener;
 import com.lumastech.ecoapp.R;
 import com.lumastech.ecoapp.Utility;
 import com.lumastech.ecoapp.databinding.FragmentHomeBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeFragment extends Fragment {
+    private Context context;
+    private Utility utility;
+    private List<Course> itemList = new ArrayList<>();
+
     private View viewMoreCourses;
     private Button continueLearning, forumBtn;
     private NavListener listener;
@@ -35,9 +43,17 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        context = getContext();
+        utility = new Utility(context);
+        User user = utility.getUser();
         viewMoreCourses = view.findViewById(R.id.view_more_courses);
         continueLearning = view.findViewById(R.id.continue_learning);
         forumBtn = view.findViewById(R.id.forums_btn);
+        TextView username = view.findViewById(R.id.username);
+        TextView card_points = view.findViewById(R.id.card_points);
+
+        username.setText(user.name);
+        card_points.setText(user.points);
 
         viewMoreCourses.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,11 +80,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-
-
-
-
-
         setModules(view);
     }
 
@@ -93,13 +104,13 @@ public class HomeFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.module_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        CourseAdapter adapter = new CourseAdapter(coursesFragment.getDummyData(), new CourseAdapter.SelectItem() {
+        CourseAdapter adapter = new CourseAdapter(itemList, new CourseAdapter.SelectItem() {
             @Override
             public void onItemClicked(Course item) {
-                if (listener != null){
+                if (listener != null) {
                     Utility.COURSE = item;
                     listener.onButtonClicked(R.id.nav_fragment_lessons);
-                };
+                }
             }
         });
 
