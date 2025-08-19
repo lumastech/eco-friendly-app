@@ -30,7 +30,7 @@ public class LauncherActivity extends AppCompatActivity {
     private void auth() {
         utility  = new Utility(this);
         Intent intent;
-        if(utility.getUsername() == null) {
+        if(utility.token() == null) {
             intent = new Intent(this, LoginActivity.class);
         }else {
             intent = new Intent(this, MainActivity.class);
