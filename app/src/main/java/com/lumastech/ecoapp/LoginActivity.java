@@ -67,12 +67,8 @@ public class LoginActivity extends AppCompatActivity {
                     request.setPassword(password);
                     loginUser(request);
                 }else {
-                    if (email.isEmpty()){
-                        utility.setError(usernameEditText);
-                    }
-                    if (password.isEmpty()){
-                        utility.setError(passworEditText);
-                    }
+                    if (email.isEmpty()) utility.setError(usernameEditText);
+                    if (password.isEmpty()) utility.setError(passworEditText);
                 }
             }
         });
@@ -98,14 +94,17 @@ public class LoginActivity extends AppCompatActivity {
             registerResponseCall.enqueue(new Callback<ApiResponse<AuthResponse>>() {
                 @Override
                 public void onResponse(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Response<ApiResponse<AuthResponse>> response) {
-
+                    if (response.code() == 401) {
+                        utility.dialog("Invalid email or password");
+                        dialog.dismiss();
+                        return;
+                    }
                     if (response.isSuccessful() && response.body() != null) {
                         AuthResponse authResponse = response.body().getData();
-                        String token = authResponse.getAuthorizationHeader();
-                        User user = authResponse.getUser();
-
-                        // Save token and user data
-                        utility.writeToFile("token", token);
+                        utility.putUser(authResponse.user);
+                        utility.writeToFile("token", authResponse.token);
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
                     }
                 }
 
@@ -115,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (Objects.equals(t.getLocalizedMessage(), "End of input at line 1 column 1 path $")){
                         message = "We are having trouble connecting to the internet! Please make sure you have a working Internet connection.";
                     }
-                    utility.generalDialog(message);
+                    utility.dialog(message);
                     dialog.dismiss();
                     builder.setMessage(message);
                     alertDialog.show();
@@ -123,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             });
         }else{
             dialog.dismiss();
-            utility.generalDialog("There is no Internet connection!");
+            utility.dialog("There is no Internet connection!");
         }
     }
 }
