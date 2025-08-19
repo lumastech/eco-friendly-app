@@ -120,10 +120,11 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onResponse(@NonNull Call<ApiResponse<AuthResponse>> call, @NonNull Response<ApiResponse<AuthResponse>> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         AuthResponse authResponse = response.body().getData();
-                        String token = authResponse.getAuthorizationHeader();
-                        User user = authResponse.getUser();
+                        String token = authResponse.token;
+                        User user = authResponse.user;
 
                         // Save token and user data
+                        utility.putUser(user);
                         utility.writeToFile("token", token);
                     }
                 }
@@ -134,7 +135,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (Objects.equals(t.getLocalizedMessage(), "End of input at line 1 column 1 path $")){
                         message = "We are having trouble connecting to the internet! Please make sure you have a working Internet connection.";
                     }
-                    utility.generalDialog(message);
+                    utility.dialog(message);
                     dialog.dismiss();
                     builder.setMessage(message);
                     alertDialog.show();
@@ -142,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity {
             });
         }else{
             dialog.dismiss();
-            utility.generalDialog("There is no Internet connection!");
+            utility.dialog("There is no Internet connection!");
         }
     }
 }
