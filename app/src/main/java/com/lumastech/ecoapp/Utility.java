@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.VibrationEffect;
@@ -18,6 +19,7 @@ import com.lumastech.ecoapp.Models.Course;
 import com.lumastech.ecoapp.Models.Lesson;
 import com.lumastech.ecoapp.Models.Post;
 import com.lumastech.ecoapp.Models.Quiz;
+import com.lumastech.ecoapp.Models.User;
 
 import org.json.JSONObject;
 
@@ -52,20 +54,11 @@ public class Utility {
         return  sharedPreferences.getString(filename, null);
     }
 
-    public void logout() {
-        writeToFile("username", null);
-        writeToFile("token", null);
-    }
-
-
-
-    public void generalDialog(String message){
+    public void dialog(String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //
-            }
+            public void onClick(DialogInterface dialog, int which) { }
         });
         builder.setMessage(message);
         AlertDialog alertDialog;
@@ -73,10 +66,57 @@ public class Utility {
         alertDialog.show();
     }
 
-//    public User getProfile(){
-//        User user = new User();
-//        return user;
-//    }
+    public void checkResponse(int code, String message ){
+        if (message == null) message = "Application Error";
+        // if code = 401, logout
+        if (code == 401) {
+            logout();
+        }else if(code == 400){
+            dialog("Error: " + code + "Bad Request");
+        }else if (code == 500) {
+            dialog("Error: " + code + " Server Error");
+        }else if (code == 200){
+            return;
+        } else {
+            dialog(message);
+        }
+    }
+
+    public User getUser(){
+        User user = new User();
+        try {
+            user.name = readFile("username");
+            user.email = readFile("email");
+            user.image = readFile("image");
+            user.imageCover = readFile("imageCover");
+            user.points = readFile("points");
+
+        } catch (Exception e) {
+            dialog("Error: "+e.getLocalizedMessage());
+        }
+        return user;
+    }
+    public void putUser(User user){
+        try {
+            writeToFile("userid", String.valueOf(user.id));
+            writeToFile("username", user.name);
+            writeToFile("email", user.email);
+            writeToFile("image", user.image);
+            writeToFile("imageCover", user.imageCover);
+            writeToFile("points", user.points);
+        } catch (Exception e) {
+            dialog("Error: "+e.getLocalizedMessage());
+        }
+    }
+
+
+    public void logout() {
+        this.writeToFile("token",null);
+        putUser(new User());
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+    }
 
 
 
@@ -88,36 +128,15 @@ public class Utility {
         view.setBackgroundResource(R.drawable.bg_outline);
     }
 
-    public void putFromJson(){
-        // this function will be used to save class object into string
-    }
-    public String getFromJson(String filename, String string){
-        String value = "";
-        try {
-            String profileText = readFile(filename);
-            if(!Objects.equals(profileText, "")) {
-                JSONObject userObject = new JSONObject(profileText);
-                value = userObject.getString(string);
-            }
-        }catch (Exception ignored){}
-
-        return  value;
-    }
-
     public String token() {
         String token = readFile("token");
-        if (token == null){
-            logout();
-            return null;
-        }
+        if (token == null) logout();
         return token;
     }
 
     public String getUsername() {
         String str = readFile("username");
-        if (str == null){
-            logout();
-        }
+        if (str == null) logout();
         return str;
     }
 
