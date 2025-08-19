@@ -22,7 +22,7 @@ public class Api {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
-                .addInterceptor(apiErrorInterceptor)
+//                .addInterceptor(apiErrorInterceptor)
                 .connectTimeout(60, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
@@ -30,7 +30,7 @@ public class Api {
 
         return new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://10.0.2.2/")
+                .baseUrl("http://10.0.2.2:8000/api/")
                 .client(okHttpClient)
                 .build();
     }
