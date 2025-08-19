@@ -26,8 +26,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
-    // Authentication headers constant
-    String AUTH_HEADER = "Authorization: Bearer ";
 
     ///////////////////////
     // PUBLIC ROUTES
@@ -47,7 +45,7 @@ public interface ApiInterface {
 
     @Headers({"Content-Type: application/json", "accept: application/json"})
     @GET("courses/{courseId}")
-    Call<ApiResponse<Course>> getPublicCourse(@Path("courseId") int courseId);
+    Call<ApiResponse<Course>> getPublicCourse(@Path("courseId") long courseId);
 
     ///////////////////////
     // AUTHENTICATED ROUTES
@@ -84,8 +82,8 @@ public interface ApiInterface {
 
     // LESSONS
     @Headers({"Content-Type: application/json", "accept: application/json"})
-    @GET("lessons")
-    Call<ApiResponse<List<Lesson>>> getLessons(@Header("Authorization") String token);
+    @GET("lessons/{course}")
+    Call<ApiResponse<List<Lesson>>> getLessons(@Header("Authorization") String token, @Path("course") long course);
 
     @Headers({"Content-Type: application/json", "accept: application/json"})
     @POST("lessons")
@@ -105,12 +103,12 @@ public interface ApiInterface {
 
     @Headers({"Content-Type: application/json", "accept: application/json"})
     @POST("lessons/{lessonId}/complete")
-    Call<ApiResponse<Lesson>> completeLesson(@Header("Authorization") String token, @Path("lessonId") int lessonId);
+    Call<ApiResponse<Lesson>> completeLesson(@Header("Authorization") String token, @Path("lessonId") long lessonId);
 
     // QUIZZES
     @Headers({"Content-Type: application/json", "accept: application/json"})
-    @GET("quizzes")
-    Call<ApiResponse<List<Quiz>>> getQuizzes(@Header("Authorization") String token);
+    @GET("quizzes/{lesson}")
+    Call<ApiResponse<List<Quiz>>> getQuizzes(@Header("Authorization") String token, @Path("lesson") long lesson);
 
     @Headers({"Content-Type: application/json", "accept: application/json"})
     @POST("quizzes")
