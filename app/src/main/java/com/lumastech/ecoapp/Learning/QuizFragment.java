@@ -3,12 +3,18 @@ package com.lumastech.ecoapp.Learning;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -22,12 +28,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.lumastech.ecoapp.Api;
+import com.lumastech.ecoapp.Models.ApiResponse;
+import com.lumastech.ecoapp.Models.Lesson;
 import com.lumastech.ecoapp.Models.Quiz;
 import com.lumastech.ecoapp.R;
 import com.lumastech.ecoapp.Utility;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class QuizFragment extends Fragment {
@@ -35,7 +49,7 @@ public class QuizFragment extends Fragment {
     RadioButton a, b, c, d, e;
     RadioGroup optGroup;
     Button submitBtn;
-    List<Quiz> items;
+    List<Quiz> items = new ArrayList<>();
     Quiz quiz = null;
     TextView question, attempts, counter, myAnswerTv, resultTv;
     String myAnswer = null;
@@ -90,7 +104,7 @@ public class QuizFragment extends Fragment {
         nextBtn = view.findViewById(R.id.next_btn);
         resultCont.setVisibility(GONE);
 
-        items = Utility.QUIZ;
+        items = Utility.LESSON.quizzes;
 
         if (!items.isEmpty()){
             quiz = items.get(0);
@@ -107,8 +121,9 @@ public class QuizFragment extends Fragment {
                     quiz = items.get(quizCounter);
                     setView();
                 }else if (nextBtn.getText().toString().equalsIgnoreCase("finish")){
-                    popBack(R.id.nav_fragment_quiz);
-                    popBack(R.id.nav_fragment_lesson);
+                    completeLeason(Utility.LESSON.id);
+//                    popBack(R.id.nav_fragment_quiz);
+//                    popBack(R.id.nav_fragment_lesson);
                 }
             }
         });
@@ -143,7 +158,7 @@ public class QuizFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (myAnswer == null){
-                    utility.generalDialog("Please select an Option");
+                    utility.dialog("Please select an Option");
                     return;
                 }
                 if (quiz.attempts > 0) {
@@ -217,9 +232,53 @@ public class QuizFragment extends Fragment {
         });
     }
 
+    private void completeLeason(long id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+        AlertDialog alertDialog;
+
+        alertDialog = builder.create();
+        ProgressDialog dialog = ProgressDialog.show(context, "GETTING LESSONS",
+                "Please wait...", true);
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(context, ConnectivityManager.class);
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()){
+            Call<ApiResponse<Lesson>> registerResponseCall = Api.apiCall().completeLesson(utility.token(), id);
+            registerResponseCall.enqueue(new Callback<ApiResponse<Lesson>>() {
+                @Override
+                public void onResponse(@NonNull Call<ApiResponse<Lesson>> call, @NonNull Response<ApiResponse<Lesson>> response) {
+                    dialog.dismiss();
+                    utility.checkResponse(response.code(), response.message());
+                    if (response.isSuccessful() && response.body() != null) {
+                        popBack(R.id.nav_fragment_quiz);
+                        popBack(R.id.nav_fragment_lesson);
+                        utility.dialog("Lesson Completed! Congratulations!");
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ApiResponse<Lesson>> call, @NonNull Throwable t) {
+                    String message = "Error : "+t.getLocalizedMessage();
+                    if (Objects.equals(t.getLocalizedMessage(), "End of input at line 1 column 1 path $")){
+                        message = "We are having trouble connecting to the internet! Please make sure you have a working Internet connection.";
+                    }
+                    utility.dialog(message);
+                    dialog.dismiss();
+                    builder.setMessage(message);
+                    alertDialog.show();
+                }
+            });
+        }else{
+            dialog.dismiss();
+            utility.dialog("There is no Internet connection!");
+        }
+    }
 
 
     public void setView(){
+        if (quiz == null) return;
         counter.setText(String.valueOf(items.indexOf(quiz)+1).concat("/").concat(String.valueOf(items.size())));
         question.setText(String.valueOf(quizCounter+1).concat(". ").concat(quiz.qs));
         attempts.setText("Attempts Remaining ".concat(String.valueOf(quiz.attempts)));
@@ -347,6 +406,49 @@ public class QuizFragment extends Fragment {
     private void popBack(int id) {
         NavController navController = Navigation.findNavController(requireView());
         navController.popBackStack(id, true);
+    }
+
+    private void fetchData() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {}
+        });
+        AlertDialog alertDialog;
+
+        alertDialog = builder.create();
+        ProgressDialog dialog = ProgressDialog.show(context, "GETTING LESSONS",
+                "Please wait...", true);
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(context, ConnectivityManager.class);
+        if (cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()){
+            Call<ApiResponse<List<Quiz>>> registerResponseCall = Api.apiCall().getQuizzes(utility.token(), Utility.LESSON.id);
+            registerResponseCall.enqueue(new Callback<ApiResponse<List<Quiz>>>() {
+                @Override
+                public void onResponse(@NonNull Call<ApiResponse<List<Quiz>>> call, @NonNull Response<ApiResponse<List<Quiz>>> response) {
+                    dialog.dismiss();
+                    utility.checkResponse(response.code(), response.message());
+                    if (response.isSuccessful() && response.body() != null) {
+                        items = response.body().getData();
+                        setView();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<ApiResponse<List<Quiz>>> call, @NonNull Throwable t) {
+                    String message = "Error : "+t.getLocalizedMessage();
+                    if (Objects.equals(t.getLocalizedMessage(), "End of input at line 1 column 1 path $")){
+                        message = "We are having trouble connecting to the internet! Please make sure you have a working Internet connection.";
+                    }
+                    utility.dialog(message);
+                    dialog.dismiss();
+                    builder.setMessage(message);
+                    alertDialog.show();
+                }
+            });
+        }else{
+            dialog.dismiss();
+            utility.dialog("There is no Internet connection!");
+        }
     }
 
 
