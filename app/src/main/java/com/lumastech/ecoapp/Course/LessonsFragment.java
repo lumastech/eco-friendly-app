@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.lumastech.ecoapp.Api;
 import com.lumastech.ecoapp.Models.ApiResponse;
@@ -44,6 +45,7 @@ public class LessonsFragment extends Fragment {
     private Context context;
     private Utility utility;
     private NavListener listener;
+    private TextView courseName;
     public LessonsFragment() {
         // Required empty public constructor
     }
@@ -74,6 +76,8 @@ public class LessonsFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        courseName = view.findViewById(R.id.course_id);
+        courseName.setText(Utility.COURSE.name);
         fetchData();
 
     }
