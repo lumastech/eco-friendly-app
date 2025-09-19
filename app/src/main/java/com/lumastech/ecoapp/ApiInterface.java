@@ -11,6 +11,7 @@ import com.lumastech.ecoapp.Models.Post;
 import com.lumastech.ecoapp.Models.Question;
 import com.lumastech.ecoapp.Models.Quiz;
 import com.lumastech.ecoapp.Models.LoginRequest;
+import com.lumastech.ecoapp.Models.ResponseData;
 import com.lumastech.ecoapp.Models.User;
 
 import java.util.List;
@@ -204,7 +205,7 @@ public interface ApiInterface {
 
     @Headers({"Content-Type: application/json", "accept: application/json"})
     @POST("questions")
-    Call<ApiResponse<Question>> createQuestion(@Header("Authorization") String token);
+    Call<ResponseData<Question>> createQuestion(@Header("Authorization") String token);
 
     @Headers({"Content-Type: application/json", "accept: application/json"})
     @GET("questions/{questionId}")
